@@ -1,0 +1,8 @@
+.message-setting{
+    display: flex;
+    flex-direction: column;
+}
+.message-setting label{
+    font-size: 14px;
+    color: grey;
+}
