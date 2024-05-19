@@ -6,3 +6,16 @@
     font-size: 14px;
     color: grey;
 }
+textarea{
+    min-height: 60px;
+    margin-top: 5px;
+}
+.deleteBtn{
+    cursor: pointer;
+    margin-top: 40px;
+    height:30px;
+    border:2px groove #e23b3b;
+    border-radius: 8px;
+    background-color: #e23b3b;
+    color: white;
+}

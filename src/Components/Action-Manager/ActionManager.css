@@ -31,3 +31,17 @@
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding: 0px 8px;
 }
+
+.success{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    position: relative;
+    border:1px solid #60ff62;
+    height:30px;
+    background-color: #60ff62;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 0px 8px;
+}

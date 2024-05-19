@@ -6,6 +6,7 @@ import ReactFlow, {
   useEdgesState,
   Controls,
   getIncomers,
+  getConnectedEdges,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -17,12 +18,6 @@ import ActionManager from '../Action-Manager/ActionManager.jsx'; //top-upper com
 
 //custom nodeType
 const nodeTypes = { messageNode: MessageNode };
-
-// const nodesStr = localStorage.getItem('nodes') || ''
-// const edgesStr = localStorage.getItem('edges') || ''
-
-// const savedNode = nodesStr && JSON.parse(nodesStr) || []
-// const savedEdge = edgesStr && JSON.parse(edgesStr) || []
 
 const initialNodes = [
   {
@@ -46,8 +41,13 @@ const getId = () => `dndnode_${id++}`;
 
 const FlowBuilder = () => {
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const nodesStr = localStorage.getItem('nodes') || '';
+  const edgesStr = localStorage.getItem('edges') || '';
+
+  const savedNode = nodesStr ? JSON.parse(nodesStr) : null;
+  const savedEdge = edgesStr ? JSON.parse(edgesStr) : null;
+  const [nodes, setNodes, onNodesChange] = useNodesState(savedNode || initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(savedEdge || initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   //method called on Save button click
@@ -70,8 +70,8 @@ const FlowBuilder = () => {
         }
     }
     // logic to save flow ( not defined in assignment)
-    // localStorage.setItem('nodes', JSON.stringify(nodes))
-    // localStorage.setItem('edges', JSON.stringify(edges))
+    localStorage.setItem('nodes', JSON.stringify(nodes))
+    localStorage.setItem('edges', JSON.stringify(edges))
     return false 
   }
 
@@ -127,6 +127,11 @@ const FlowBuilder = () => {
         })
     )},[setNodes])
 
+    const onNodesDelete = (node) => {
+      const connectedEdges = getConnectedEdges([node], edges);
+      reactFlowInstance.deleteElements({ nodes: [{id:node.id}], edges: connectedEdges })
+    }
+
   return (
     <div className="dndflow">
       <ReactFlowProvider>
@@ -137,6 +142,7 @@ const FlowBuilder = () => {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onNodesDelete={onNodesDelete}
             onConnect={onConnect}
             onInit={setReactFlowInstance}
             onDrop={onDrop}
@@ -147,7 +153,7 @@ const FlowBuilder = () => {
             <Controls />
           </ReactFlow>
         </div>
-        <Sidebar onMessageChange={onMessageChange}/>
+        <Sidebar onMessageChange={onMessageChange} onNodesDelete={onNodesDelete}/>
       </ReactFlowProvider>
     </div>
   );

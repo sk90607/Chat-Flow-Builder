@@ -3,7 +3,7 @@ import NodesPanel from '../NodesPanel/NodesPanel';
 import { useOnSelectionChange } from 'reactflow';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
 
-const Sidebar = ({onMessageChange}) => {
+const Sidebar = ({onMessageChange, onNodesDelete}) => {
     const [selectedNode, setSelectedNode] = useState(null)
 
     //this onChange inside useOnSelectionChange gets called when we select any node by clicking
@@ -13,7 +13,7 @@ const Sidebar = ({onMessageChange}) => {
       
   return (
     <aside>
-     {selectedNode ? <SettingsPanel onMessageChange={onMessageChange} node={selectedNode}/> 
+     {selectedNode ? <SettingsPanel onMessageChange={onMessageChange} node={selectedNode} onNodesDelete={onNodesDelete}/> 
                     : <NodesPanel/>}
     </aside>
   );
